@@ -21,7 +21,7 @@ var fibonacci = (function () {
   return fib;
 })();
 
-
+// sort method
  var m = ['aa', 'bb', 'a', 4, 8, 15,16,23,42]
 
  console.log(m.sort((a,b) => {
@@ -35,9 +35,38 @@ var fibonacci = (function () {
 
  }))
 
- var by = function () {
+ var by = function (name) {
     return function (o, p) {
         var a,b;
-        if(typeof o === 'object' && typeof p === 'object') 
+        if(typeof o === 'object' && typeof p === 'object' && o && p) {
+            a = o[name];
+            b = p[name];
+            console.log('log')
+            if(a === b) {
+                return 0
+            }
+            if(typeof a === typeof b) {
+                return a < b ? -1 : 1
+            } else {
+                throw {
+                    name: 'Error',
+                    massage: 'expected an object when sorting by ' + name
+                }
+            }
+        }
     }
  }
+
+ const s = [
+    {first: 'Joe', last: 'Besser'},
+    {first: 'Moe', last: 'Howard'},
+    {first: 'Joe', last: 'Derita'},
+    {first: 'Shemp', last: 'Hovard'},
+    {first: 'Larry', last: 'Fine'},
+    {first: 'Curly', last: 'Howard'},
+
+ ]
+
+ console.log(s.sort(by('first')))
+
+ //
