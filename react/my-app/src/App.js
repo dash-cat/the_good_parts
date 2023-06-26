@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 // import Counter from './components/Counter';
 // import ClassCounter from './components/ClassCounter';
 import './styles/App.css'
@@ -21,16 +21,17 @@ function App() {
   const [selectedSort, setselectedSort] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
 
-  function getSortedPost() {
-    console.log('working function sort')
-    if(selectedSort) {
-      return [...posts].sort((a,b) => a[selectedSort].localeCompare(b[selectedSort]))
+  const sortedPosts = useMemo(() => {
+    if (selectedSort) {
+      return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
     }
     return posts
-  }
+  }, [selectedSort, posts])
 
-   
-  const sortedPosts = getSortedPost()
+  const sortedAndSearchPosts = useMemo(()=> {
+    return sortedPosts.filter(post => post.title.includes(searchQuery))
+  },[searchQuery, sortedPosts])
+
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
   }
@@ -51,20 +52,20 @@ function App() {
         onChange={e => setSearchQuery(e.target.value)}
         placeholder={'Search...'}
       />
-      <hr style={{margin: '15px 0'}}/>
+      <hr style={{ margin: '15px 0' }} />
       <div>
-       <MySelect
-        value={selectedSort}
-        onChange={sortPosts}
-        defaultValue="Сортировка"
-        options={[
-          {value: 'title', name: 'По названию'},
-          {value: 'body', name: 'По описанию'}
-        ]}
-       />
+        <MySelect
+          value={selectedSort}
+          onChange={sortPosts}
+          defaultValue="Сортировка"
+          options={[
+            { value: 'title', name: 'По названию' },
+            { value: 'body', name: 'По описанию' }
+          ]}
+        />
       </div>
       {posts.length !== 0
-        ? <PostList remove={removePost} posts={sortedPosts} title="Список постов" />
+        ? <PostList remove={removePost} posts={sortedAndSearchPosts} title="Список постов" />
         : <h1 style={{ textAlign: 'center' }}>Посты не были найдены!</h1>
       }
     </div>
