@@ -35,7 +35,7 @@ var fibonacci = (function () {
 
  }))
 
- var by = function (name) {
+ var by = function (name, minor) {
     return function (o, p) {
         var a,b;
         if(typeof o === 'object' && typeof p === 'object' && o && p) {
@@ -43,7 +43,8 @@ var fibonacci = (function () {
             b = p[name];
             console.log('log')
             if(a === b) {
-                return 0
+                console.log('minor', minor(o, p))
+                return typeof minor === 'function' ? minor(o, p) : 0
             }
             if(typeof a === typeof b) {
                 return a < b ? -1 : 1
@@ -67,6 +68,8 @@ var fibonacci = (function () {
 
  ]
 
- console.log(s.sort(by('first')))
+ console.log(s.sort(by('last', by('first'))))
 
  //
+
+ 
