@@ -14,20 +14,13 @@ function App() {
     { id: 3, title: 'Vue2', body: 'Non-comerse2' },
 
   ])
-  const [title, setTitle] = useState('')
-  const [body, setBody] = useState('')
-  const bodyInputRef = useRef()
+  const [post, setPost] = useState({title: '', body: ''})
 
   const addNewPost = (e) => {
     e.preventDefault()
-   const newPost = {
-    id: Date.now(),
-    title,
-    body,
-   }
-   setPosts([...posts, newPost])
-   setTitle('')
-   setBody('')
+ 
+   setPosts([...posts, {...post, id: Date.now()}])
+   setPost({title: '', body: ''})
   }
 
 
@@ -36,15 +29,15 @@ function App() {
       {/* Managed component*/}
       <form>
         <MyInput
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          value={post.title}
+          onChange={e => setPost({...post, title: e.target.value})}
           type="text"
           placeholder='The Name Post'
         />
         {/* unmanaged component*/}
         <MyInput
-          value={body}
-          onChange={e => setBody(e.target.value)}
+          value={post.body}
+          onChange={e => setPost({...post, body: e.target.value})}
           type="text"
           placeholder='Description Post'
 
