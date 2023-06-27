@@ -7,6 +7,7 @@ import PostFilter from './components/PostFilter';
 import MyModal from './components/Ui/MyModal/MyModal';
 import { usePosts } from './hooks/usePosts';
 import PostService from './API/PostService';
+import Loader from './components/Ui/loader/Loader';
 
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
       <hr style={{ margin: '15px 0' }} />
       <PostFilter filter={filter} setFilter={setFilter} />
       {isPostsLoading
-        ? <h1>Идет загрузка...</h1>
+        ? <div style={{display: 'flex', justifyContent: 'center'}}><Loader/></div>
         : <PostList remove={removePost} posts={sortedAndSearchPosts} title="Список постов" />}
 
     </div>
